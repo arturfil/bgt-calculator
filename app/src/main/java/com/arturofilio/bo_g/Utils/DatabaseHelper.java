@@ -1,8 +1,11 @@
 package com.arturofilio.bo_g.Utils;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -11,11 +14,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     private static final String DATABASE_NAME = "bog.db";
     private static final String TABLE_NAME = "budgets_table";
     public static final String COL0 = "ID";
-    public static final String COL1 = "Initial_Date";
-    public static final String COL2 = "Ending_Date";
-    public static final String COL3 = "Todays_Date";
-    public static final String COL4 = "Budget";
-    public static final String COL5 = "Daily_Exp";
+    public static final String COL1 = "MONTHLY_BUDGET";
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, 1);
@@ -25,13 +24,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         String sql = "CREATE TABLE " +
-                TABLE_NAME + " ( " +
-                COL0 + "INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                COL1 + "TEXT, " +
-                COL2 + "TEXT, " +
-                COL3 + "TEXT, " +
-                COL4 + "INTEGER, " +
-                COL5 + "INTEGER) ";
+                TABLE_NAME + " ( ID INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                COL1 + "DOUBLE) ";
         db.execSQL(sql);
     }
 
@@ -42,10 +36,48 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
     /**
-     * Insert a new budget on to the database
+     * Save Monthly Budget;
      *
      */
+    public boolean addBudget(double monthly_budget) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL1, monthly_budget);
 
-    //Missing a lot of code lol
+        Log.d(TAG, "addBudget: Adding " + monthly_budget + " to " + TABLE_NAME);
+
+        double result = db.insert(TABLE_NAME, null, contentValues);
+
+        if (result == 0) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+
+    public Cursor getPayment() {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT * FROM " + TABLE_NAME;
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public Cursor getPaymentID(Double payment) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "SELECT " + COL0 + " FROM " + TABLE_NAME +
+                " WHERE " + COL1 + " = '" + payment + "'";
+        Cursor data = db.rawQuery(query, null);
+        return data;
+    }
+
+    public void updateMonthlyBudget(Double newBudgt, int id, Double oldBudgt) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        String query = "UPDATE " + TABLE_NAME + " SET " + COL1 +
+                " = '" + newBudgt + "' WHERE " + COL0 + " = '" + id + "'" +
+                " AND " + COL1 + " = '" + oldBudgt + "'";
+        Log.d(TAG, "updateMonthlyBudget: query: " + query);
+        db.execSQL(query);
+    }
 
 }

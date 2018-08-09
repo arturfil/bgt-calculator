@@ -1,5 +1,6 @@
 package com.arturofilio.bo_g;
 
+import android.content.Intent;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arturofilio.bo_g.Utils.DatabaseHelper;
 import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.text.DecimalFormat;
@@ -20,26 +22,42 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
 
     // Variables;
-    EditText mBudgetInput;
     private Button btnCalculate;
+    private Button mbtnEdit;
     private TextView mFinalDate;
     private TextView mTodayDate;
+    private TextView mMonthlyBudget;
     private TextView mDailyExp;
-    private int remainingDays;
-    private int monthlyBudget;
 
+    DatabaseHelper mDatabaseHelper;
     //Set Widgets;
 
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
+        mbtnEdit = (Button) findViewById(R.id.btnEdit);
         btnCalculate = (Button) findViewById(R.id.btnCalculate);
         mFinalDate = (TextView) findViewById(R.id.endDate);
         mTodayDate = (TextView) findViewById(R.id.toDate);
-        mBudgetInput = (MaterialEditText) findViewById(R.id.monthBudget);
+        mMonthlyBudget = (TextView) findViewById(R.id.monthly_budget);
         mDailyExp = (TextView) findViewById(R.id.dailyExp);
+
+        mDatabaseHelper = new DatabaseHelper(this);
+
+        /**
+         * IF statement to check if there a payment in the database, if so display it otherwise not.
+         */
+//        if(mBudgetInput.payment.lenght() != 0) {
+//            //get info form db
+//
+//            // use the data from db to calculate dayExp.
+//
+//        } else {
+//            // don't return anything
+//        }
 
         setTodayDate();
         setFinalDate();
@@ -49,19 +67,51 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                Calendar cal = Calendar.getInstance();
-                double dayS = cal.get(Calendar.DAY_OF_MONTH);
-                double dayEnd = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
-                double remaining = dayEnd - dayS;
+                // Have to redo
 
-                DecimalFormat df = new DecimalFormat("0.0#");
-                double monthlyBudget = Double.parseDouble(mBudgetInput.getText().toString());
+//                Double monthlyBudget = Double.parseDouble(mBudgetInput.getText().toString());
+//                if(mBudgetInput.length() != 0) {
+////                    addData(monthlyBudget);
+//
+//                    Calendar cal = Calendar.getInstance();
+//                    double dayS = cal.get(Calendar.DAY_OF_MONTH);
+//                    double dayEnd = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+//                    double remaining = dayEnd - dayS;
+//                    addData(monthlyBudget);
+//
+//                    DecimalFormat df = new DecimalFormat("0.0#");
+//
+//
+//                    String dailyExp = df.format(monthlyBudget/remaining);
+//
+//                    mDailyExp.setText((String.valueOf("Daily Exp. = $" + dailyExp)));
+//
+//
+//                } else {
+//                    Toast.makeText(MainActivity.this, "You must put something in the textField", Toast.LENGTH_SHORT).show();
+//                }
 
-                String dailyExp = df.format(monthlyBudget/remaining);
 
-                mDailyExp.setText((String.valueOf("Daily Exp. = $" + dailyExp)));
             }
         });
+
+        mbtnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, EnterBudget.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    public void addData(Double newEntry) {
+        boolean insertData = mDatabaseHelper.addBudget(newEntry);
+
+        if(insertData) {
+            Toast.makeText(this, "Data Successfully Inserted!", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(this, "Oops! Something went wrong!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
