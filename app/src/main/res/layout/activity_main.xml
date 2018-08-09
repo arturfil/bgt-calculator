@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/my_bg"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_centerInParent="true"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/label1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColorHint="@android:color/white"
+            android:text="Today's Date"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            />
+
+        <TextView
+            android:id="@+id/toDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColorHint="@android:color/white"
+            android:text="05/07/2018"
+            android:textColor="@android:color/white"
+            android:textSize="34sp"
+            android:layout_marginBottom="20dp"
+            />
+
+        <TextView
+            android:id="@+id/label2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColorHint="@android:color/white"
+            android:text="Final Date"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            />
+
+        <TextView
+            android:id="@+id/endDate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColorHint="@android:color/white"
+            android:text="08/31/2018"
+            android:textColor="@android:color/white"
+            android:textSize="34sp"
+            android:layout_marginBottom="20dp"
+            />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="20">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="19"
+                android:text="$"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"/>
+
+            <com.rengwuxian.materialedittext.MaterialEditText
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:id="@+id/monthBudget"
+                android:hint="Enter Budget"
+                android:textColorHint="@android:color/white"
+                android:textColor="@android:color/white"
+                android:textSize="30sp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="20dp"
+                android:inputType="numberDecimal"
+                app:met_baseColor="@android:color/white"
+                app:met_primaryColor="@android:color/white"
+                app:met_singleLineEllipsis="false"
+                />
+
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/dailyExp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:textColorHint="@android:color/white"
+            android:textColor="@android:color/white"
+            android:textSize="30sp"
+            android:text="Your Daily Exp. will appear here"/>
+
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:layout_width="match_parent"
+        android:layout_marginRight="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_alignParentBottom="true"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnCalculate"
+        android:text="Process"
+        android:textColor="@android:color/white"
+        android:layout_margin="8dp"
+        android:background="@color/btnSignActive" />
+
+</RelativeLayout>
